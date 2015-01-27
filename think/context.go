@@ -90,6 +90,7 @@ func (c *Context) master(workers int, timer Timer) {
 
 		case output = <-c.done:
 			close(c.done)
+			c.done = nil
 			close(input)
 			input = nil
 
