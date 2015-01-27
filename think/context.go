@@ -72,10 +72,10 @@ func (c *Context) master(workers int, timer Timer) {
 	var output chan<- []Registration
 	for {
 		var in chan<- thinker
-		var next thinker
+		var next Thinker
 		if len(h) != 0 {
 			if !now.Before(h[0].next) {
-				in, next = input, h[0]
+				in, next = input, h[0].Thinker
 			} else if wait == nil {
 				wait = timer.Wait(h[0].next)
 			}
@@ -85,7 +85,7 @@ func (c *Context) master(workers int, timer Timer) {
 		case t := <-c.register:
 			heap.Push(&h, t)
 
-		case in <- next:
+		case in <- thinker{next, now}:
 			heap.Pop(&h)
 
 		case output = <-c.done:
