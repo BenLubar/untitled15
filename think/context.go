@@ -48,6 +48,11 @@ func (c *Context) Register(t Thinker, next time.Time) {
 	c.register <- thinker{t, next}
 }
 
+// RegisterFunc is a convenience method equivalent to Register.
+func (c *Context) RegisterFunc(f Func, next time.Time) {
+	c.Register(f, next)
+}
+
 // Close waits for any currently running Thinkers to finish, then returns
 // a sorted slice of thinkers that were registered but did not yet Think.
 // After Close has returned, no method on Context may be called. Once Close
@@ -121,3 +126,9 @@ func (c *Context) slave(input <-chan thinker, done chan<- struct{}) {
 		t.Think(c, t.next)
 	}
 }
+
+// Func is a simple implementation of Thinker.
+type Func func(*Context, time.Time)
+
+// Think implements Thinker.
+func (f Func) Think(c *Context, t time.Time) { f(c, t) }
