@@ -12,7 +12,7 @@ func (f Field) Value(ctx interface{}) []interface{} {
 	values := f.Parent.Value(ctx)
 
 	for i, v := range values {
-		values[i] = reflect.ValueOf(v).FieldByName(f.Name).Interface()
+		values[i] = reflect.Indirect(reflect.ValueOf(v)).FieldByName(f.Name).Interface()
 	}
 
 	return values
