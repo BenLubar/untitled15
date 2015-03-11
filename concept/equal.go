@@ -1,9 +1,7 @@
 package concept
 
-import "reflect"
-
 // Equal is a Predicate that is true if all of the Value results contain an
-// identical element according to the rules of reflect.DeepEqual.
+// identical element.
 type Equal []Value
 
 func (e Equal) Test(ctx interface{}) bool {
@@ -18,7 +16,7 @@ outer:
 	inner:
 		for _, set := range values[1:] {
 			for _, v2 := range set {
-				if reflect.DeepEqual(v1, v2) {
+				if v1 == v2 {
 					continue inner
 				}
 			}
