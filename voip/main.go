@@ -103,6 +103,9 @@ func SocketHandler(ws *websocket.Conn) {
 			if !ok {
 				return
 			}
+			if p.Special != "" {
+				continue
+			}
 			if p.User != "" {
 				continue
 			}
